@@ -28,7 +28,7 @@ function page_site_alert_content_type_render($subtype, $conf, $panel_args) {
 
   drupal_add_js(drupal_get_path('module', 'site_alert') . '/site_alert.js');
 
-  $block = new StdClass();
+  $block = new stdClass();
   $block->title = '';
   $block->content = '<div class="site-alert"></div>';
 
