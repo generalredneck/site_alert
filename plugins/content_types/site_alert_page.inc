@@ -1,9 +1,12 @@
 <?php
 
 /**
+ * Plugin to handle the 'site_alert' content type.
+ *
+ * This allows the Site Alert to be embedded into a panel.
+ *
  * @file
- * Plugin to handle the 'page_alert_title' content type which allows the
- * Alert title for the site to be embedded into a panel.
+ *
  */
 
 /**
@@ -20,9 +23,9 @@ $plugin = array(
 );
 
 /**
- * Output function for the 'page_alert_title' content type.
+ * Callback for the 'site_alert' content type.
  *
- * Outputs the alert title for the current page.
+ * Outputs the site alert for the current page.
  */
 function site_alert_page_content_type_render($subtype, $conf, $panel_args) {
 

@@ -1,9 +1,10 @@
 <?php
 
 /**
+ * Core functionality for the Site Alert module.
+ *
  * @file site_alert.module
  *
- * Core functionality for the Site Alert module.
  */
 
 /**
@@ -16,8 +17,11 @@ function site_alert_ctools_plugin_directory($owner, $plugin_type) {
 }
 
 /**
- * Build the administration form which collects the following values
+ * Build the administration form.
+ *
+ * This form collects the following values
  * and stores them in the vars table.
+ *
  * @toggle - whether or not an alert is active
  * @severity - Severity of the alert (low or high)
  * @title - The title of the Alert (usually "Alert")
@@ -152,7 +156,7 @@ function site_alert_get_alert() {
 }
 
 /**
- * Implements hook_block_info() to create a site alert block.
+ * Implements hook_block_info().
  */
 function site_alert_block_info() {
   $blocks = array();

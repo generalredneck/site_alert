@@ -35,14 +35,18 @@ USING THE MODULE
 To use with Panels:
 
 Enable the Site Alert module
-Add the pane to your desired page/variant. It is located in the 'Page Elements' section.
-Ensure that all necessary roles have the 'administer site alerts' permission. (All roles can view alerts)
+Add the pane to your desired page/variant.
+It is located in the 'Page Elements' section.
+Ensure that all necessary roles have the 'administer site alerts' permission.
+(All roles can view alerts)
 Create an alert (admin/settings/alerts)
 Enjoy your exciting new site alert!
+
 To use the Block:
 
 Enable the Site Alert module
 Add the 'Site Alert' block to whichever region you wish it to appear in.
-Ensure that all necessary roles have the 'administer site alerts' permission.(All roles can view alerts)
+Ensure that all necessary roles have the 'administer site alerts' permission.
+(All roles can view alerts)
 Create an alert (admin/settings/alerts)
 Enjoy your exciting new site alert!
