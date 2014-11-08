@@ -15,7 +15,7 @@ $plugin = array(
   'single' => TRUE,
   'description' => t('A site wide alert.'),
   'category' => t('Page elements'),
-  'render callback' => 'page_site_alert_content_type_render',
+  'render callback' => 'site_alert_page_content_type_render',
   'render last' => TRUE,
 );
 
@@ -24,7 +24,7 @@ $plugin = array(
  *
  * Outputs the alert title for the current page.
  */
-function page_site_alert_content_type_render($subtype, $conf, $panel_args) {
+function site_alert_page_content_type_render($subtype, $conf, $panel_args) {
 
   drupal_add_js(drupal_get_path('module', 'site_alert') . '/site_alert.js');
 

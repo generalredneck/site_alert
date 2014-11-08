@@ -12,23 +12,23 @@ div.site-alert div.text {
 }
 
 div.site-alert div.low {
-  background: #F3EAAC;
-  border: 1px solid #CC9E9F;
+  background: #f3eaac;
+  border: 1px solid #cc9e9f;
   background-image: url('icon-alert.png');
-    background-repeat: no-repeat;
-    background-size:30px 30px;
-    background-position: 1% 50%;
+  background-repeat: no-repeat;
+  background-size: 30px 30px;
+  background-position: 1% 50%;
   margin-bottom: 1.5em;
 }
 
 div.site-alert div.high {
   max-height: 44px;
-  background: #EDD5D6;
-  border: 1px solid #B45F61;
+  background: #edd5d6;
+  border: 1px solid #b45f61;
   background-image: url('icon-alert.png');
-    background-repeat: no-repeat;
-    background-size:30px 30px;
-    background-position: 1% 50%;
+  background-repeat: no-repeat;
+  background-size: 30px 30px;
+  background-position: 1% 50%;
   margin-bottom: 1.5em;
 }
 
