@@ -6,12 +6,10 @@
  * This allows the Site Alert to be embedded into a panel.
  *
  * @file
- *
  */
 
 /**
- * Plugins are described by creating a $plugin array which will be used
- * by the system that includes this file.
+ * Create a $plugin array.
  */
 $plugin = array(
   'title' => t('Site Alert'),
