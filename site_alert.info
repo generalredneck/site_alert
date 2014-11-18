@@ -7,3 +7,5 @@ dependencies[] = date_popup
 dependencies[] = date_api
 
 stylesheets[all][] = css/site-alert.css
+
+configure = admin/config/system/alerts
