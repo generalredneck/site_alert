@@ -93,7 +93,7 @@ function site_alert_menu() {
 
   $items = array();
 
-  $items['admin/settings/alerts'] = array(
+  $items['admin/config/system/alerts'] = array(
     'title' => 'Site Alert Settings',
     'description' => 'Toggle alerts on/off and configure the title and contents',
     'page callback' => 'drupal_get_form',
