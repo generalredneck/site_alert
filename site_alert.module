@@ -16,6 +16,42 @@ function site_alert_ctools_plugin_directory($owner, $plugin_type) {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function site_alert_theme() {
+  return array(
+    'site_alert' => array(
+      'variables' => array(
+        'level' => NULL,
+        'alert' => NULL,
+      ),
+    ),
+  );
+}
+
+/**
+ * Theming for site alert.
+ *
+ * @param array $variables
+ *   Theme variables.
+ *
+ * @return string
+ *   Html output for site alert.
+ */
+function theme_site_alert($variables) {
+  $level = $variables['level'];
+  $alert = $variables['alert'];
+
+  $output = '<div class=' . $level . '>';
+  $output .= '<div class=text>';
+
+  $tags = array('a', 'em', 'strong');
+  $output .= filter_xss($alert, $tags);
+  $output .= '</div></div>';
+  return $output;
+}
+
+/**
  * Build the administration form.
  *
  * This form collects the following values
@@ -141,14 +177,12 @@ function site_alert_get_alert() {
 
   if ($begin < time()) {
     if ($expire > time()) {
-      $output = '<div class=' . $level . '>';
-      $output .= '<div class=text>';
-
-      $tags = array('a', 'em', 'strong');
-      $output .= filter_xss($alert, $tags);
-      $output .= '</div></div>';
-
-      print $output;
+      $output = array(
+        '#theme' => 'site_alert',
+        '#level' => $level,
+        '#alert' => $alert,
+      );
+      print render($output);
       drupal_exit();
     }
   }
