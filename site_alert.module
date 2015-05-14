@@ -6,6 +6,8 @@
  * @file site_alert.module
  */
 
+define('SITE_ALERT_TIMEOUT_DEFAULT', 300);
+
 /**
  * Implements hook_ctools_plugin_directory().
  */
@@ -108,6 +110,23 @@ function site_alert_admin() {
     '#required' => TRUE,
   );
 
+  $form['site_alert_timeout'] = array(
+    '#type' => 'select',
+    '#title' => t('Timeout'),
+    '#options' => array(
+      60 => t('1 minute'),
+      120 => t('2 minutes'),
+      300 => t('5 minutes'),
+      600 => t('10 minutes'),
+      900 => t('15 minutes'),
+      1200 => t('20 minutes'),
+      1800 => t('30 minutes'),
+      3600 => t('1 hour'),
+    ),
+    '#default_value' => variable_get('site_alert_timeout', SITE_ALERT_TIMEOUT_DEFAULT),
+    '#description' => t('Configure how frequently the alert is updated in the user\'s browser.'),
+  );
+
   $alert = variable_get('site_alert_content');
 
   $form['site_alert_content'] = array(
@@ -206,6 +225,7 @@ function site_alert_block_info() {
 function site_alert_block_view() {
 
   drupal_add_js(drupal_get_path('module', 'site_alert') . '/site_alert.js');
+  drupal_add_js(array('siteAlert' => array('timeout' =>  variable_get('site_alert_timeout', SITE_ALERT_TIMEOUT_DEFAULT))), 'setting');
 
   $block = array();
   $block['title'] = '';

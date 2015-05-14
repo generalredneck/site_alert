@@ -16,12 +16,15 @@ var basePath;
   };
 
   // Function to update alert text.
-  var loadAlert = function (alert) {
+  var loadAlert = function (siteAlert) {
     var callback = basePath + 'ajax/site_alert';
-    alert.load(callback);
+    siteAlert.load(callback);
 
-    // Update content every 5 minutes.
-    setTimeout(function () { loadAlert(alert) }, 300000);
+    // Update content at configured interval.
+   if (Drupal.settings.siteAlert.timeout > 0) {
+     setTimeout(function() { loadAlert(siteAlert) }, Drupal.settings.siteAlert.timeout * 1000);
+   }
+
   }
 
 })(jQuery);

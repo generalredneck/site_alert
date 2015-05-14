@@ -28,6 +28,7 @@ $plugin = array(
 function site_alert_page_content_type_render($subtype, $conf, $panel_args) {
 
   drupal_add_js(drupal_get_path('module', 'site_alert') . '/site_alert.js');
+  drupal_add_js(array('siteAlert' => array('timeout' =>  variable_get('site_alert_timeout', SITE_ALERT_TIMEOUT_DEFAULT))), 'setting');
 
   $block = new stdClass();
   $block->title = '';
