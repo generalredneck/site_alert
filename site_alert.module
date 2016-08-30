@@ -103,8 +103,9 @@ function site_alert_admin() {
     '#type' => 'select',
     '#title' => 'Severity',
     '#options' => array(
-      'low' => t('Low Severity - Yellow'),
-      'high' => t('High Severity - Red'),
+      'info' => t('Informational Only - Default Blue'),
+      'low' => t('Low Severity - Default Yellow'),
+      'high' => t('High Severity - Default Red'),
     ),
     '#default_value' => variable_get('site_alert_severity', 'low'),
     '#required' => TRUE,
