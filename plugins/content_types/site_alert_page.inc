@@ -31,8 +31,6 @@ function site_alert_page_content_type_render($subtype, $conf, $panel_args) {
   drupal_add_js(array('siteAlert' => array('timeout' =>  variable_get('site_alert_timeout', SITE_ALERT_TIMEOUT_DEFAULT))), 'setting');
 
   $block = new stdClass();
-  $block->title = '';
-  $block->content = '<div class="site-alert"></div>';
-
+  $block->content = array('#theme' => 'site_alert_wrapper');
   return $block;
 }

@@ -25,32 +25,22 @@ function site_alert_theme() {
     'site_alert' => array(
       'variables' => array(
         'level' => NULL,
-        'alert' => NULL,
+        'alert' => NULL
       ),
+      'template' => 'templates/site-alert',
+    ),
+    'site_alert_wrapper' => array(
+      'variables' => array(),
+      'template' => 'templates/site-alert-wrapper',
     ),
   );
 }
 
 /**
- * Theming for site alert.
- *
- * @param array $variables
- *   Theme variables.
- *
- * @return string
- *   Html output for site alert.
+ * Preprocess variables for site-alert.tpl.php.
  */
-function theme_site_alert($variables) {
-  $level = $variables['level'];
-  $alert = $variables['alert'];
-
-  $output = '<div class=' . $level . '>';
-  $output .= '<div class=text>';
-
-  $tags = array('a', 'em', 'strong');
-  $output .= filter_xss($alert, $tags);
-  $output .= '</div></div>';
-  return $output;
+function template_preprocess_site_alert(&$variables) {
+  $variables['alert'] = filter_xss($variables['alert'], array('a', 'em', 'strong'));
 }
 
 /**
@@ -163,6 +153,7 @@ function site_alert_menu() {
     'page callback' => 'site_alert_get_alert',
     'type' => MENU_CALLBACK,
     'access callback' => TRUE,
+    'theme callback' => 'ajax_base_page_theme',
   );
 
   return $items;
@@ -228,8 +219,6 @@ function site_alert_block_view() {
   drupal_add_js(drupal_get_path('module', 'site_alert') . '/site_alert.js');
   drupal_add_js(array('siteAlert' => array('timeout' =>  variable_get('site_alert_timeout', SITE_ALERT_TIMEOUT_DEFAULT))), 'setting');
 
-  $block = array();
-  $block['title'] = '';
-  $block['content'] = '<div class="site-alert"></div>';
+  $block = array('content' => array('#theme' => 'site_alert_wrapper'));
   return $block;
 }
