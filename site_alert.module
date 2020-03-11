@@ -1,9 +1,8 @@
 <?php
 
 /**
+ * @file
  * Core functionality for the Site Alert module.
- *
- * @file site_alert.module
  */
 
 define('SITE_ALERT_TIMEOUT_DEFAULT', 300);
@@ -25,7 +24,8 @@ function site_alert_theme() {
     'site_alert' => array(
       'variables' => array(
         'level' => NULL,
-        'alert' => NULL
+        'alert' => NULL,
+        'checksum' => NULL,
       ),
       'template' => 'templates/site-alert',
     ),
@@ -40,26 +40,28 @@ function site_alert_theme() {
  * Preprocess variables for site-alert.tpl.php.
  */
 function template_preprocess_site_alert(&$variables) {
-  $variables['alert'] = filter_xss($variables['alert'], array('a', 'em', 'strong'));
+  $variables['alert'] = filter_xss(
+    $variables['alert'],
+    array('a', 'em', 'strong')
+  );
 }
 
 /**
  * Build the administration form.
  *
- * This form collects the following values
- * and stores them in the vars table.
+ * This form collects the following values and stores them in the vars table.
  *
- * @toggle - whether or not an alert is active
- * @severity - Severity of the alert (low or high)
- * @title - The title of the Alert (usually "Alert")
- * @content - Content to display on the homepage
- * @node - The associated Alert Node. The Read More link on the homepage will link to this node
+ * @start - the start date of the alert
+ * @end - the end date of the alert
+ * @severity - severity of the alert (info, low, or high)
+ * @timeout - the refresh frequency of the alert
+ * @content - content to display in the block
  */
 function site_alert_admin() {
   $form = array();
 
   $form['site_alert_description'] = array(
-    '#value' => '<p>Use this page to set an Alert. If the "Turn On Alert" checkbox is checked, a blue or red banner (depending on the Alert Severity) will be displayed on the homepage containing the copy defined here.',
+    '#value' => '<p>Use this page to set an Alert. If the current date is between the start and end date a blue, yellow, or red banner (depending on the Alert Severity) will be displayed containing the copy defined here on all pages with the Site Alert Block placed.',
   );
 
   $date = time();
@@ -115,7 +117,7 @@ function site_alert_admin() {
       3600 => t('1 hour'),
     ),
     '#default_value' => variable_get('site_alert_timeout', SITE_ALERT_TIMEOUT_DEFAULT),
-    '#description' => t('Configure how frequently the alert is updated in the user\'s browser.'),
+    '#description' => t("Configure how frequently the alert is updated in the user's browser."),
   );
 
   $alert = variable_get('site_alert_content');
@@ -129,7 +131,31 @@ function site_alert_admin() {
     '#rows' => 2,
   );
 
-  return system_settings_form($form, FALSE);
+  $form['#submit'][] = 'site_alert_admin_submit';
+
+  return system_settings_form($form);
+}
+
+/**
+ * Submit callback of site_alert_admin form.
+ *
+ * @param array $form
+ *   The form array.
+ * @param array $form_state
+ *   The form state array.
+ */
+function site_alert_admin_submit(array $form, array &$form_state) {
+  $settings = array();
+  // Exclude unnecessary elements.
+  form_state_values_clean($form_state);
+  foreach ($form_state['values'] as $key => $value) {
+    if (is_array($value) && isset($form_state['values']['array_filter'])) {
+      $value = array_keys(array_filter($value));
+    }
+    $settings[$key] = $value;
+  }
+  $checksum = md5(serialize($settings));
+  variable_set('site_alert_checksum', $checksum);
 }
 
 /**
@@ -185,6 +211,15 @@ function site_alert_get_alert() {
 
   $level = variable_get('site_alert_severity');
   $alert = variable_get('site_alert_content');
+  $checksum = variable_get('site_alert_checksum');
+
+  // Even though the cookie is stored with period separators, PHP casts them to
+  // underscores.
+  if (!empty($_COOKIE['Drupal_siteAlert_checksum'])) {
+    if ($_COOKIE['Drupal_siteAlert_checksum'] == $checksum) {
+      return;
+    }
+  }
 
   if ($begin < time()) {
     if ($expire > time()) {
@@ -192,6 +227,7 @@ function site_alert_get_alert() {
         '#theme' => 'site_alert',
         '#level' => $level,
         '#alert' => $alert,
+        '#checksum' => $checksum,
       );
       print render($output);
       drupal_exit();
@@ -217,7 +253,7 @@ function site_alert_block_info() {
 function site_alert_block_view() {
 
   drupal_add_js(drupal_get_path('module', 'site_alert') . '/site_alert.js');
-  drupal_add_js(array('siteAlert' => array('timeout' =>  variable_get('site_alert_timeout', SITE_ALERT_TIMEOUT_DEFAULT))), 'setting');
+  drupal_add_js(array('siteAlert' => array('timeout' => variable_get('site_alert_timeout', SITE_ALERT_TIMEOUT_DEFAULT))), 'setting');
 
   $block = array('content' => array('#theme' => 'site_alert_wrapper'));
   return $block;

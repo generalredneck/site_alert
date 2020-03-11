@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * site-alert-wrapper.tpl.php

@@ -6,8 +6,27 @@
 
 (function ($) {
 
-var basePath;
+  var basePath;
 
+  /**
+   * Handle dismissing alerts.
+   */
+  Drupal.behaviors.siteAlertClose = {
+    attach: function(context, settings) {
+      $('.site-alert').on('click', '.site-alert-close', function (e) {
+        var checksum = $(this).parent().data('alert-checksum');
+        var date = new Date();
+        date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
+        document.cookie = "Drupal.siteAlert.checksum=" + checksum + "; expires=" + date.toGMTString();
+
+        $(this).parent().fadeOut();
+      });
+    }
+  };
+
+  /**
+   * Load any alerts.
+   */
   Drupal.behaviors.siteAlert = {
     attach: function(context, settings) {
       basePath = settings.basePath;
@@ -15,7 +34,9 @@ var basePath;
     }
   };
 
-  // Function to update alert text.
+  /**
+   * Function to update alert text.
+   */
   var loadAlert = function (siteAlert) {
     var callback = basePath + 'ajax/site_alert';
 
