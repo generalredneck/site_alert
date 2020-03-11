@@ -11,3 +11,18 @@
 function site_alert_update_7000() {
   // Do nothing.
 }
+
+/**
+ * Adding a checksum for installs that have an active alert.
+ */
+function site_alert_update_7001() {
+  $settings = array(
+    'site_alert_start' => variable_get('site_alert_start', time()),
+    'site_alert_expire' => variable_get('site_alert_expire', time()),
+    'site_alert_severity' => variable_get('site_alert_severity', 'low'),
+    'site_alert_timeout' => variable_get('site_alert_timeout', SITE_ALERT_TIMEOUT_DEFAULT),
+    'site_alert_content' => variable_get('site_alert_content'),
+  );
+  $checksum = md5(serialize($settings));
+  variable_set('site_alert_checksum', $checksum);
+}

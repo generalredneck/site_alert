@@ -9,22 +9,6 @@
   var basePath;
 
   /**
-   * Handle dismissing alerts.
-   */
-  Drupal.behaviors.siteAlertClose = {
-    attach: function(context, settings) {
-      $('.site-alert').on('click', '.site-alert-close', function (e) {
-        var checksum = $(this).parent().data('alert-checksum');
-        var date = new Date();
-        date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
-        document.cookie = "Drupal.siteAlert.checksum=" + checksum + "; expires=" + date.toGMTString();
-
-        $(this).parent().fadeOut();
-      });
-    }
-  };
-
-  /**
    * Load any alerts.
    */
   Drupal.behaviors.siteAlert = {
@@ -46,7 +30,16 @@
     var options = {
       ajax_page_state: Drupal.settings.ajaxPageState
     };
-    siteAlert.load(callback, options);
+    siteAlert.load(callback, options, function() {
+      $('.site-alert-close', siteAlert).click(function (e) {
+        var checksum = $(this).parent().data('alert-checksum');
+        var date = new Date();
+        date.setTime(date.getTime() + (30 * 24 * 60 * 60 * 1000));
+        document.cookie = "Drupal.siteAlert.checksum=" + checksum + "; expires=" + date.toGMTString();
+
+        $(this).parent().fadeOut();
+      });
+    });
 
     // Update content at configured interval.
     if (Drupal.settings.siteAlert.timeout > 0) {
